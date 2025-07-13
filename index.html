@@ -41,9 +41,37 @@
       </div>
     </header>
 
-    <!-- Add Employee Button -->
-    <div class="add-employee-wrapper">
-      <a href="form.html" class="add-btn">+ Add Employee</a>
+    <div class="filter-wrapper">
+      <div class="filter-container">
+        <div class="sortBy">
+          <label for="sortBy">Sort by:</label>
+          <select id="sortBy">
+            <option value="">None</option>
+            <option value="name-asc">Name (A–Z)</option>
+            <option value="name-desc">Name (Z–A)</option>
+            <option value="department-asc">Department (A–Z)</option>
+            <option value="department-desc">Department (Z–A)</option>
+          </select>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination-controls">
+          <label for="entriesPerPage">Show:</label>
+          <select id="entriesPerPage">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+
+          <div id="paginationButtons"></div>
+        </div>
+      </div>
+
+      <!-- Add Employee Button -->
+      <div class="add-employee-wrapper">
+        <a href="form.html" class="add-btn">+ Add Employee</a>
+      </div>
     </div>
 
     <!-- Employee Cards Section -->

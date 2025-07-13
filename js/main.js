@@ -1,12 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
   const employeeList = document.getElementById("employeeList");
+  let currentSort = "";
 
   // Load employees from localStorage
   let employees = JSON.parse(localStorage.getItem("employees")) || [];
+  let currentPage = 1;
+  let entriesPerPage = 10;
+  let filteredData = employees; // to support search/filter pagination
 
   // Render employees to DOM
   function renderEmployees(data) {
+    const start = (currentPage - 1) * entriesPerPage;
+    const end = start + entriesPerPage;
+    const paginated = data.slice(start, end);
+
     employeeList.innerHTML = "";
 
     data.forEach((emp, index) => {
@@ -26,7 +34,42 @@ document.addEventListener("DOMContentLoaded", () => {
       employeeList.appendChild(card);
     });
 
+    renderPaginationButtons(data);
     attachDeleteEvents();
+  }
+
+  function renderPaginationButtons(data) {
+    const totalPages = Math.ceil(data.length / entriesPerPage);
+    const paginationDiv = document.getElementById("paginationButtons");
+    paginationDiv.innerHTML = "";
+
+    if (totalPages <= 1) return;
+
+    if (currentPage > 1) {
+      const prev = createPageButton("Prev", currentPage - 1);
+      paginationDiv.appendChild(prev);
+    }
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = createPageButton(i, i);
+      if (i === currentPage) btn.classList.add("active");
+      paginationDiv.appendChild(btn);
+    }
+
+    if (currentPage < totalPages) {
+      const next = createPageButton("Next", currentPage + 1);
+      paginationDiv.appendChild(next);
+    }
+  }
+
+  function createPageButton(text, pageNum) {
+    const btn = document.createElement("button");
+    btn.innerText = text;
+    btn.addEventListener("click", () => {
+      currentPage = pageNum;
+      renderEmployees(sortData(filteredData, currentSort));
+    });
+    return btn;
   }
 
   function attachDeleteEvents() {
@@ -61,15 +104,18 @@ document.addEventListener("DOMContentLoaded", () => {
         (!roleVal || emp.role.toLowerCase().includes(roleVal))
       );
     });
-
-    renderEmployees(filtered);
+    filteredData = filtered; // assign
+    currentPage = 1;
+    renderEmployees(sortData(filteredData, currentSort));
   });
 
   document.getElementById("clearFilters").addEventListener("click", () => {
     document.getElementById("filterName").value = "";
     document.getElementById("filterDepartment").value = "";
     document.getElementById("filterRole").value = "";
-    renderEmployees(employees);
+    filteredData = employees;
+    currentPage = 1;
+    renderEmployees(sortData(filteredData, currentSort));
   });
 
   // Search functionality
@@ -84,6 +130,44 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
 
-    renderEmployees(filtered);
+    currentPage = 1;
+    filteredData = filtered;
+    renderEmployees(sortData(filteredData, currentSort));
   });
+
+  document.getElementById("entriesPerPage").addEventListener("change", (e) => {
+    entriesPerPage = parseInt(e.target.value);
+    currentPage = 1;
+    renderEmployees(sortData(filteredData, currentSort));
+  });
+
+  function sortData(data, sortBy) {
+    const sorted = [...data]; // avoid mutating original
+
+    switch (sortBy) {
+      case "name-asc":
+        sorted.sort((a, b) => a.firstName.localeCompare(b.firstName));
+        break;
+      case "name-desc":
+        sorted.sort((a, b) => b.firstName.localeCompare(a.firstName));
+        break;
+      case "department-asc":
+        sorted.sort((a, b) => a.department.localeCompare(b.department));
+        break;
+      case "department-desc":
+        sorted.sort((a, b) => b.department.localeCompare(a.department));
+        break;
+    }
+
+    return sorted;
+  }
+
+  document.getElementById("sortBy").addEventListener("change", (e) => {
+    currentSort = e.target.value;
+    const sorted = sortData(filteredData, currentSort);
+    currentPage = 1;
+    renderEmployees(sorted);
+  });
+  filteredData = employees;
+  renderEmployees(sortData(filteredData, currentSort));
 });
