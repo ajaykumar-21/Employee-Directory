@@ -43,6 +43,35 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial render
   renderEmployees(employees);
 
+  document.getElementById("filterToggleBtn").addEventListener("click", () => {
+    document.getElementById("filterSidebar").classList.toggle("hidden");
+  });
+
+  document.getElementById("applyFilters").addEventListener("click", () => {
+    const nameVal = document.getElementById("filterName").value.toLowerCase();
+    const deptVal = document
+      .getElementById("filterDepartment")
+      .value.toLowerCase();
+    const roleVal = document.getElementById("filterRole").value.toLowerCase();
+
+    const filtered = employees.filter((emp) => {
+      return (
+        (!nameVal || emp.firstName.toLowerCase().includes(nameVal)) &&
+        (!deptVal || emp.department.toLowerCase().includes(deptVal)) &&
+        (!roleVal || emp.role.toLowerCase().includes(roleVal))
+      );
+    });
+
+    renderEmployees(filtered);
+  });
+
+  document.getElementById("clearFilters").addEventListener("click", () => {
+    document.getElementById("filterName").value = "";
+    document.getElementById("filterDepartment").value = "";
+    document.getElementById("filterRole").value = "";
+    renderEmployees(employees);
+  });
+
   // Search functionality
   searchInput.addEventListener("input", (e) => {
     const searchText = e.target.value.toLowerCase();

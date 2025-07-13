@@ -8,35 +8,47 @@
   </head>
   <body>
     <header>
-      <h1>Employee Directory</h1>
       <div class="header-actions">
+        <h1>Employee Directory</h1>
         <input
           type="text"
           id="searchInput"
           placeholder="Search by name or email..."
         />
-        <a href="form.html" class="add-btn">+ Add Employee</a>
+        <button id="filterToggleBtn">Filters</button>
+      </div>
+
+      <div id="filterSidebar" class="filter-sidebar hidden">
+        <h3>Filter Employees</h3>
+
+        <div class="filter-group">
+          <label for="filterName">First Name</label>
+          <input type="text" id="filterName" placeholder="e.g. John" />
+        </div>
+
+        <div class="filter-group">
+          <label for="filterDepartment">Department</label>
+          <input type="text" id="filterDepartment" placeholder="e.g. HR" />
+        </div>
+
+        <div class="filter-group">
+          <label for="filterRole">Role</label>
+          <input type="text" id="filterRole" placeholder="e.g. Developer" />
+        </div>
+
+        <button id="applyFilters">Apply</button>
+        <button id="clearFilters">Clear</button>
       </div>
     </header>
 
-    <main id="employeeList">
-      <div class="employee-card" data-id="1">
-        <p><strong>John Doe</strong></p>
-        <p>Email: john.doe@example.com</p>
-        <p>Department: Engineering</p>
-        <p>Role: Frontend Developer</p>
-        <button class="edit-btn">Edit</button>
-        <button class="delete-btn">Delete</button>
-      </div>
+    <!-- Add Employee Button -->
+    <div class="add-employee-wrapper">
+      <a href="form.html" class="add-btn">+ Add Employee</a>
+    </div>
 
-      <div class="employee-card" data-id="2">
-        <p><strong>Jane Smith</strong></p>
-        <p>Email: jane.smith@example.com</p>
-        <p>Department: HR</p>
-        <p>Role: Recruiter</p>
-        <button class="edit-btn">Edit</button>
-        <button class="delete-btn">Delete</button>
-      </div>
+    <!-- Employee Cards Section -->
+    <main id="employeeList" class="employee-list">
+      <!-- Cards will be dynamically inserted here via JS -->
     </main>
 
     <script src="js/main.js"></script>
