@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Directory</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Employee Directory</h1>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by name or email..."
+      />
+    </header>
+
+    <main id="employeeList">
+      <div class="employee-card" data-id="1">
+        <p><strong>John Doe</strong></p>
+        <p>Email: john.doe@example.com</p>
+        <p>Department: Engineering</p>
+        <p>Role: Frontend Developer</p>
+        <button class="edit-btn">Edit</button>
+        <button class="delete-btn">Delete</button>
+      </div>
+
+      <div class="employee-card" data-id="2">
+        <p><strong>Jane Smith</strong></p>
+        <p>Email: jane.smith@example.com</p>
+        <p>Department: HR</p>
+        <p>Role: Recruiter</p>
+        <button class="edit-btn">Edit</button>
+        <button class="delete-btn">Delete</button>
+      </div>
+    </main>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
