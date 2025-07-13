@@ -1,10 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("employeeForm");
+  const urlParams = new URLSearchParams(window.location.search);
+  const employeeId = urlParams.get("id");
+
+  const fields = ["firstName", "lastName", "email", "department", "role"];
+  let employees = JSON.parse(localStorage.getItem("employees")) || [];
+  let isEditMode = false;
+
+  if (employeeId) {
+    const emp = employees.find((e) => e.id == employeeId);
+    if (emp) {
+      isEditMode = true;
+      document.getElementById("formTitle").innerText = "Edit Employee";
+      fields.forEach((field) => {
+        document.getElementById(field).value = emp[field];
+      });
+    }
+  }
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-
-    const fields = ["firstName", "lastName", "email", "department", "role"];
     let isValid = true;
 
     const formData = {};
@@ -31,17 +46,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (isValid) {
-      const employees = JSON.parse(localStorage.getItem("employees")) || [];
-      const newEmployee = {
-        id: Date.now(),
-        ...formData,
-      };
-      employees.push(newEmployee);
+      if (isEditMode) {
+        // Update existing employee
+        employees = employees.map((emp) => {
+          if (emp.id == employeeId) {
+            return { ...emp, ...formData };
+          }
+          return emp;
+        });
+        alert("Employee updated successfully!");
+      } else {
+        // Create new employee
+        const newEmployee = { id: Date.now(), ...formData };
+        employees.push(newEmployee);
+        alert("Employee added successfully!");
+      }
+
       localStorage.setItem("employees", JSON.stringify(employees));
-
-      alert("Employee added successfully!");
-
-      // Redirect to index.html
       window.location.href = "index.html";
     }
   });

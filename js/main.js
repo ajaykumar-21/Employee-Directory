@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>Email: ${emp.email}</p>
         <p>Department: ${emp.department}</p>
         <p>Role: ${emp.role}</p>
-        <button class="edit-btn" data-index="${index}">Edit</button>
+        <a href="form.html?id=${emp.id}" class="edit-btn">Edit</a>
         <button class="delete-btn" data-index="${index}">Delete</button>
       `;
 
